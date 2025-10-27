@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATH – Student Handbook Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        #chat-box {
+            width: 400px;
+            height: 400px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 320px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>PATH</h1>
+    <div id="chat-box"></div>
+    <div>
+        <input type="text" id="user-input" placeholder="Ask something about the student handbook..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
+            const userText = input.value.trim();
+            if (!userText) return;
+
+            chatBox.innerHTML += `<div><b>You:</b> ${userText}</div>`;
+            input.value = "";
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: userText})
+            });
+
+            const data = await response.json();
+            chatBox.innerHTML += `<div><b>PATH:</b> ${data.reply}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
