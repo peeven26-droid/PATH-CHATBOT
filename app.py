@@ -32,7 +32,7 @@ def chat():
     )
 
     response = client.chat.completions.create(
-        model="4o-mini",
+        model="o4-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
