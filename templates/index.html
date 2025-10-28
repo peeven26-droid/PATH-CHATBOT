@@ -16,9 +16,19 @@
       margin: 0;
     }
 
-    h1 {
-      color: #2c3e50;
+    /* Logo styling */
+    #logo {
+      width: 120px;
+      height: auto;
       margin-bottom: 15px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     #chat-container {
@@ -122,8 +132,10 @@
   </style>
 </head>
 <body>
-  <h1>PATH</h1>
+  <!-- Logo -->
+  <img src="path_logo.png" alt="PATH Logo" id="logo">
 
+  <!-- Chatbox -->
   <div id="chat-container">
     <div id="chat-box"></div>
     <div id="input-area">
@@ -132,6 +144,7 @@
     </div>
   </div>
 
+  <!-- Note -->
   <div id="note">
     *It is recommended to countercheck using the physical copy of the Student Handbook.
   </div>
