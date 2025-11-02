@@ -30,14 +30,8 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* 💬 Chat Container */
@@ -83,7 +77,7 @@
       max-width: 80%;
       padding: 10px 14px;
       border-radius: 18px;
-      line-height: 1.4;
+      line-height: 1.5;
       word-wrap: break-word;
       font-size: 14.5px;
       animation: popIn 0.3s ease;
@@ -91,14 +85,8 @@
     }
 
     @keyframes popIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .user {
@@ -113,6 +101,13 @@
       background-color: #e9f2f5;
       color: #222;
       border-radius: 18px 18px 18px 4px;
+      opacity: 0;
+      animation: fadeInBot 0.4s ease forwards;
+    }
+
+    @keyframes fadeInBot {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* 🧮 Input Area */
@@ -172,11 +167,7 @@
       margin: 5px auto;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* 🧾 Scrollbar Styling */
     #chat-box::-webkit-scrollbar {
@@ -231,6 +222,7 @@
       const userText = input.value.trim();
       if (!userText) return;
 
+      // Display user message
       const userBubble = document.createElement("div");
       userBubble.className = "message user";
       userBubble.textContent = userText;
@@ -238,6 +230,7 @@
       chatBox.scrollTop = chatBox.scrollHeight;
       input.value = "";
 
+      // Loading spinner
       const loading = document.createElement("div");
       loading.className = "loading";
       chatBox.appendChild(loading);
@@ -253,12 +246,19 @@
         const data = await response.json();
         chatBox.removeChild(loading);
 
+        // Format AI text with paragraph breaks
+        const formattedReply = (data.reply || "Sorry, I couldn’t understand that.")
+          .split(/\n+/)
+          .map(line => `<p>${line.trim()}</p>`)
+          .join("");
+
+        // Create and display bot message
         const botBubble = document.createElement("div");
         botBubble.className = "message bot";
-        botBubble.textContent =
-          data.reply || "Sorry, I couldn’t understand that.";
+        botBubble.innerHTML = formattedReply;
         chatBox.appendChild(botBubble);
         chatBox.scrollTop = chatBox.scrollHeight;
+
       } catch (error) {
         chatBox.removeChild(loading);
         const errorBubble = document.createElement("div");
@@ -269,6 +269,7 @@
       }
     }
 
+    // Send on Enter key
     document
       .getElementById("user-input")
       .addEventListener("keypress", function (e) {
