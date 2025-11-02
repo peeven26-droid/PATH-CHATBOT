@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PATH – Student Handbook Assistant</title>
+
   <style>
+    /* 🌐 Global Styles */
     body {
-      /* ✅ Updated font stack (matches ChatGPT on Windows) */
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background-color: #f5f7fa;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: linear-gradient(135deg, #eef3f7, #f9fbfc);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -17,9 +19,9 @@
       margin: 0;
     }
 
-    /* Logo styling */
+    /* 🪶 Logo */
     #logo {
-      width: 120px;
+      width: 110px;
       height: auto;
       margin-bottom: 15px;
       object-fit: contain;
@@ -28,122 +30,196 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
+    /* 💬 Chat Container */
     #chat-container {
       display: flex;
       flex-direction: column;
       background: white;
-      border: 1px solid #ccc;
-      border-radius: 16px;
-      width: 400px;
-      height: 500px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 18px;
+      width: 420px;
+      height: 520px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       overflow: hidden;
+      backdrop-filter: blur(6px);
     }
 
+    /* 🧭 Header */
+    #chat-header {
+      background-color: #046684;
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      padding: 12px;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 🧵 Chat Box */
     #chat-box {
       flex: 1;
       overflow-y: auto;
-      padding: 15px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+      background-color: #ffffff;
     }
 
+    /* ✉️ Messages */
     .message {
-      max-width: 75%;
+      max-width: 80%;
       padding: 10px 14px;
-      border-radius: 16px;
+      border-radius: 18px;
       line-height: 1.4;
       word-wrap: break-word;
+      font-size: 14.5px;
+      animation: popIn 0.3s ease;
+      transition: all 0.25s ease;
     }
 
-    /* ✅ Updated color for user bubble */
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     .user {
       align-self: flex-end;
       background-color: #046684;
       color: white;
-      border-bottom-right-radius: 4px;
+      border-radius: 18px 18px 4px 18px;
     }
 
     .bot {
       align-self: flex-start;
-      background-color: #e9ecef;
-      color: #333;
-      border-bottom-left-radius: 4px;
+      background-color: #e9f2f5;
+      color: #222;
+      border-radius: 18px 18px 18px 4px;
     }
 
+    /* 🧮 Input Area */
     #input-area {
       display: flex;
+      align-items: center;
       padding: 10px;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #eee;
       background-color: #fafafa;
     }
 
     input {
       flex: 1;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #bbb;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
       outline: none;
       font-size: 14px;
+      transition: all 0.2s ease;
     }
 
-    /* ✅ Updated button color to match chat bubble */
+    input:focus {
+      border-color: #046684;
+      box-shadow: 0 0 4px rgba(4, 102, 132, 0.2);
+    }
+
     button {
-      margin-left: 8px;
-      padding: 8px 14px;
+      margin-left: 10px;
       background-color: #046684;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
     }
 
     button:hover {
       background-color: #03546b;
+      transform: scale(1.05);
     }
 
-    /* Loading animation */
+    /* 🌀 Loading Spinner */
     .loading {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border: 3px solid #ccc;
-      border-top-color: #046684; /* ✅ Match accent color */
+      border-top-color: #046684;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 5px auto;
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
+    /* 🧾 Scrollbar Styling */
+    #chat-box::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #chat-box::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 3px;
+    }
+
+    /* 📎 Note */
     #note {
       font-size: 11px;
       color: #777;
-      margin-top: 8px;
+      margin-top: 10px;
       text-align: center;
-      width: 400px;
+      width: 420px;
     }
   </style>
 </head>
-<body>
-  <img src="{{ url_for('static', filename='path_logo.png') }}" alt="PATH Logo" id="logo">
 
+<body>
+  <!-- ✅ Logo -->
+  <img src="{{ url_for('static', filename='path_logo.png') }}" alt="PATH Logo" id="logo" />
+
+  <!-- 💬 Chat Container -->
   <div id="chat-container">
+    <div id="chat-header">PATH – Student Handbook Assistant</div>
+
     <div id="chat-box"></div>
+
     <div id="input-area">
-      <input type="text" id="user-input" placeholder="Ask something about the student handbook..." />
-      <button onclick="sendMessage()">Send</button>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Ask something about the student handbook..."
+      />
+      <button onclick="sendMessage()">➤</button>
     </div>
   </div>
 
+  <!-- ℹ️ Note -->
   <div id="note">
     *It is recommended to countercheck using the physical copy of the Student Handbook.
   </div>
@@ -171,7 +247,7 @@
         const response = await fetch("/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userText })
+          body: JSON.stringify({ message: userText }),
         });
 
         const data = await response.json();
@@ -179,21 +255,25 @@
 
         const botBubble = document.createElement("div");
         botBubble.className = "message bot";
-        botBubble.textContent = data.reply || "Sorry, I couldn’t understand that.";
+        botBubble.textContent =
+          data.reply || "Sorry, I couldn’t understand that.";
         chatBox.appendChild(botBubble);
         chatBox.scrollTop = chatBox.scrollHeight;
       } catch (error) {
         chatBox.removeChild(loading);
         const errorBubble = document.createElement("div");
         errorBubble.className = "message bot";
-        errorBubble.textContent = "Oops! Something went wrong. Please try again.";
+        errorBubble.textContent =
+          "Oops! Something went wrong. Please try again.";
         chatBox.appendChild(errorBubble);
       }
     }
 
-    document.getElementById("user-input").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") sendMessage();
-    });
+    document
+      .getElementById("user-input")
+      .addEventListener("keypress", function (e) {
+        if (e.key === "Enter") sendMessage();
+      });
   </script>
 </body>
 </html>
